@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BMI Calculator</title>
+  <style>
+    /* Basic styling to center content */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      overflow: hidden; /* Hide overflow to avoid showing content during animation */
+    }
+
+    /* Styles for welcome text */
+    .welcome-text {
+      font-size: 8em; /* Larger font size */
+      color: #333;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      position: absolute;
+      top: 25%;
+      left: 25%;
+      right: 25%;
+      bottom: 25%;
+      text-align: center;
+    }
+
+    /* Styles for BMI Calculator */
+    .bmi-calculator {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%; /* Adjust width as needed */
+      height: 80%; /* Adjust height as needed */
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      flex-direction: column;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    /* Style for BMI input fields */
+    input[type="text"], input[type="number"] {
+      width: 70%;
+      padding: 15px;
+      border: 2px solid #ccc;
+      border-radius: 25px;
+      font-size: 1.5em;
+      outline: none;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1.5em;
+      border-radius: 25px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    /* Style for BMI comment */
+    #comment {
+      font-size: 1.5em;
+      margin-top: 20px;
+      display: none; /* Initially hide the comment */
+    }
+
+    /* Style for enlarged BMI result */
+    #result {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="welcome-text">Welcome</h1>
+
+  <div class="bmi-calculator" id="bmiCalculator">
+    <h2 class="title">BMI Calculator</h2>
+    <input type="text" id="height" placeholder="Enter your height (in cm)" />
+    <input type="text" id="weight" placeholder="Enter your weight (in kg)" />
+    <button id="calculateBtn">Calculate BMI</button>
+    <p id="result"></p>
+    <p id="comment"></p>
+    <!-- Additional content of the BMI calculator can be added here -->
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const welcomeText = document.querySelector('.welcome-text');
+      const bmiCalculator = document.getElementById('bmiCalculator');
+
+      setTimeout(function() {
+        welcomeText.style.opacity = '1';
+        welcomeText.style.transform = 'translateY(0)';
+      }, 500);
+
+      setTimeout(function() {
+        welcomeText.style.display = 'none';
+        bmiCalculator.style.display = 'flex';
+      }, 2000);
+    });
+
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+      const height = parseFloat(document.getElementById('height').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const resultElement = document.getElementById('result');
+      const commentElement = document.getElementById('comment');
+
+      if (!isNaN(height) && !isNaN(weight)) {
+        const bmi = (weight / ((height / 100) * (height / 100))).toFixed(2);
+        resultElement.innerHTML = `Your BMI is: ${bmi}`;
+
+        if (bmi < 18.5) {
+          commentElement.style.color = 'orange';
+          commentElement.innerHTML = 'Underweight';
+          commentElement.style.display = 'block';
+        } else if (bmi >= 18.5 && bmi < 25) {
+          commentElement.style.color = 'green';
+          commentElement.innerHTML = 'Normal (Healthy Weight)';
+          commentElement.style.display = 'block';
+        } else if (bmi >= 25 && bmi < 30) {
+          commentElement.style.color = 'orange';
+          commentElement.innerHTML = 'Overweight';
+          commentElement.style.display = 'block';
+        } else {
+          commentElement.style.color = 'red';
+          commentElement.innerHTML = 'Obese';
+          commentElement.style.display = 'block';
+        }
+        resultElement.style.fontSize = '3em';
+      } else {
+        resultElement.innerHTML = 'Please enter valid height and weight';
+        commentElement.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
